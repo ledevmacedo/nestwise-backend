@@ -85,7 +85,7 @@ app.post("/auth/register", async (req, res) => {
     const user = new User({
         name,
         email,
-        passwordHash,
+        password: passwordHash,
     });
 
     try {
@@ -96,6 +96,7 @@ app.post("/auth/register", async (req, res) => {
         res.status(500).json({ msg: error });
     }
 });
+
 
 app.post("/auth/login", async (req, res) => {
     const { email, password } = req.body;
@@ -117,9 +118,9 @@ app.post("/auth/login", async (req, res) => {
     }
 
     // check if password match
-    const checkPassword = await bcrypt.compare(password, user.password);
+    const checkpassword = await bcrypt.compare(password, user.password);
 
-    if (!checkPassword) {
+    if (!checkpassword) {
         return res.status(422).json({ msg: "Senha inválida" });
     }
 
@@ -138,9 +139,10 @@ app.post("/auth/login", async (req, res) => {
         res.status(500).json({ msg: error });
     }
 });
-//Credentials
-const dbUser = process.env.DB_USER
-const dbPassword = process.env.DB_PASS
+
+
+const dbUser = process.env.DB_USER;
+const dbPassword = process.env.DB_PASS;
 
 mongoose.connect(`mongodb+srv://${dbUser}:${dbPassword}@nestwise.gu0mjpm.mongodb.net/nestwise?retryWrites=true&w=majority&appName=nestwise`)
     .then(() => {
