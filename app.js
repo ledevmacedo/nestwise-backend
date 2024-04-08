@@ -10,31 +10,25 @@ const app = express();
 
 // models
 const User = require("./models/User");
+
 //middleware
-const checkToken = require('./middleware/checkToken'); 
+const checkToken = require('./middleware/checkToken');
 
 
 // Config JSON response
 app.use(express.json());
 
+
 // Open Route
+
 app.get("/", (req, res) => {
     res.status(200).json({ msg: "Bem vindo a API!" });
 });
 
 // Private Route
-app.get("/user/:id", checkToken, async (req, res) => {
-    const id = req.params.id;
+const getUserRouter = require("./routes/getUser");
+app.use("/user", getUserRouter);
 
-    // check if user exists
-    const user = await User.findById(id, "-password");
-
-    if (!user) {
-        return res.status(404).json({ msg: "Usuário não encontrado!" });
-    }
-
-    res.status(200).json({ user });
-});
 
 app.post("/auth/register", async (req, res) => {
     const { name, email, password, confirmpassword } = req.body;
