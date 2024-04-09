@@ -4,6 +4,7 @@ const checkToken = require('../middleware/checkToken');
 const express = require("express");
 const router = express.Router();
 
+
 router.get("/:id", checkToken, async (req, res) => {
     const id = req.params.id;
 
@@ -15,7 +16,7 @@ router.get("/:id", checkToken, async (req, res) => {
     }
 
     res.status(200).json({ user });
-    console.log(`Usuário ${user.name} encontrado`)
+    console.log(`Usuário ${user.id} encontrado`)
 });
 
 module.exports = router;
